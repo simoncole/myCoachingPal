@@ -1,14 +1,18 @@
-const dotenv = require('dotenv');
-dotenv.config();
 
-const express = require('express');
+import * as dotenv from 'dotenv';
+dotenv.config();
+import express from 'express';
+import mysql from 'mysql2/promise';
 
 const port = 4000;
-const testKey = process.env.TEST;
 const app = express();
 
-app.get("/", (req, res) => {
-    console.log(testKey);
+const connection = await mysql.createConnection(process.env.DATABASE_URL);
+
+app.get("/", async (req, res) => {
+    const [rows, fields] = await connection.execute("SELECT * FROM users;");
+    
+    console.log(rows);
     res.send("Start of myCoachingPal backend!");
 })
 

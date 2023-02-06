@@ -1,3 +1,4 @@
+import styles from '../../styles/Home.module.css';
 import { useState } from 'react';
 
 const LoginForm = ({loginData, setFormDataState}) => {
@@ -20,25 +21,29 @@ const LoginForm = ({loginData, setFormDataState}) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label htmlFor="username">Username:</label>
-        <input
-          type="text"
-          id="username"
-          value={username}
-          onChange={handleUsernameChange}
-        />
-      </div>
-      <div>
-        <label htmlFor="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={handlePasswordChange}
-        />
-      </div>
-      <button type="submit">Login</button>
+        <div className={styles.loginFormWrapper}>
+
+        <div className={styles.loginField}>
+            <label htmlFor="username">Username: </label>
+            <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={handleUsernameChange}
+            />
+        </div>
+        <div className={styles.loginField}>
+            <label htmlFor="password">Password: </label>
+            <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={handlePasswordChange}
+            />
+        </div>
+        <button className={styles.button} type="submit">Login</button>
+        </div>
+
     </form>
   );
 };

@@ -32,12 +32,11 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div>
-          <LoginForm loginData={loginData} setFormDataState={setFormDataState}/>
-          <Unverified unverifiedState={unverifiedState}/>
-        </div>
-      </main>
+      <div className={styles.loginWrapper}>
+        <h1 className={styles.title}>Please Log In</h1>
+        <LoginForm loginData={loginData} setFormDataState={setFormDataState}/>
+        <Unverified unverifiedState={unverifiedState}/>
+      </div>
     </>
   );
 }

@@ -6,23 +6,26 @@ import {useQuery} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import Unverified from './components/Unverified';
+import { useRouter } from 'next/router';
 
 export const baseUrl = "http://localhost:3000";
 
 export default function Home() {
+  const router = useRouter();
   const [formDataState, setFormDataState] = useState({});
   const [unverifiedState, setUnverifiedState] = useState(false);
 
   const queryKeyVars = {
     "formDataState": formDataState,
-    "setUnverifiedState": setUnverifiedState
+    "setUnverifiedState": setUnverifiedState,
+    "router": router
   };
   const loginData = useQuery({
     queryKey: ["loginData", queryKeyVars],
     queryFn: () => fetchLoginData(queryKeyVars.formDataState), 
     refetchOnWindowFocus: false,
     enabled: false,
-    onSuccess: (data) => redirectUser(data, queryKeyVars.setUnverifiedState)
+    onSuccess: (data) => redirectUser(data, queryKeyVars.setUnverifiedState, queryKeyVars.router)
   });
 
   return (
@@ -48,11 +51,13 @@ const fetchLoginData = async (formDataState) => {
   return await res.json();
 }
 
-const redirectUser = (data, setUnverifiedState) => {
-  if(data.role === "coach") window.location.replace(baseUrl + "/coach");
-  else if(data.role === "player") window.location.replace(baseUrl + "/player");
+const redirectUser = (data, setUnverifiedState, router) => {
+  if(data.role === "coach") router.push(`${baseUrl}/coach`);
+  else if(data.role === "player") router.push(`${baseUrl}/player`);
   else if(data.role === "unverified") setUnverifiedState(true);
   else{
     console.error("there was an error in the role returned");
   }; 
+
+  // window.location.replace(baseUrl + "/player");
 }

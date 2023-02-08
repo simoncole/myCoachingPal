@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import styles from "../../../styles/home.module.css";
+import styles from "../../../../styles/Home.module.css"
 
 export default function CoachPlayerPage(){
     const router = useRouter();

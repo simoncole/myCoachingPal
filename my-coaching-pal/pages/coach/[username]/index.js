@@ -1,8 +1,9 @@
+import CoachCalendar from "@/pages/components/CoachCalendar";
 import RosterList from "@/pages/components/RosterList";
 import { isError, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { baseUrl, baseServerUrl } from "../.."
-import styles from "../../../styles/home.module.css";
+import styles from "../../../styles/Home.module.css";
 
 export default function Coach(){
     const router = useRouter();
@@ -26,6 +27,7 @@ export default function Coach(){
                         :
                             <></>
             }
+            {/* <CoachCalendar/> */}
         </div>
     )
 }

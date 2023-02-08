@@ -60,7 +60,7 @@ app.get('/getRoster', async (req, res) => {
 
         const playerQueryString = "SELECT username FROM users WHERE role='player' AND TEAM=?";
         const [playerQueryData, fields] = await connection.execute(playerQueryString, [team]);
-
+        console.log(playerQueryData);
         res.status(200).json(playerQueryData);
     }
     catch(err){

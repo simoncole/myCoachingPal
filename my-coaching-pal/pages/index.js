@@ -1,6 +1,4 @@
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
 import styles from '@/styles/Home.module.css'
 import {useQuery} from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
@@ -9,6 +7,7 @@ import Unverified from './components/Unverified';
 import { useRouter } from 'next/router';
 
 export const baseUrl = "http://localhost:3000";
+export const baseServerUrl = "http://localhost:4000";
 
 export default function Home() {
   const router = useRouter();
@@ -25,7 +24,7 @@ export default function Home() {
     queryFn: () => fetchLoginData(queryKeyVars.formDataState), 
     refetchOnWindowFocus: false,
     enabled: false,
-    onSuccess: (data) => redirectUser(data, queryKeyVars.setUnverifiedState, queryKeyVars.router)
+    onSuccess: (data) => redirectUser(data, queryKeyVars.setUnverifiedState, queryKeyVars.router, queryKeyVars.formDataState.username)
   });
 
   return (
@@ -51,8 +50,8 @@ const fetchLoginData = async (formDataState) => {
   return await res.json();
 }
 
-const redirectUser = (data, setUnverifiedState, router) => {
-  if(data.role === "coach") router.push(`${baseUrl}/coach`);
+const redirectUser = (data, setUnverifiedState, router, username) => {
+  if(data.role === "coach") router.push(`${baseUrl}/coach/${username}`);
   else if(data.role === "player") router.push(`${baseUrl}/player`);
   else if(data.role === "unverified") setUnverifiedState(true);
   else{

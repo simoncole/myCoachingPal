@@ -12,10 +12,10 @@ export default function Coach(){
 
     return(
         <div>
-            <h2>Coach page</h2>
+            <h2>Hello, {router.query.username}</h2>
             {
                 rosterData.data?
-                    <RosterList rosterData={rosterData.data}/>
+                    <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>
                 :
                     rosterData.isLoading?
                         <h2>hold on...</h2>

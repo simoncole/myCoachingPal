@@ -2,6 +2,7 @@ import RosterList from "@/pages/components/RosterList";
 import { isError, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { baseUrl, baseServerUrl } from "../.."
+import styles from "../../../styles/home.module.css";
 
 export default function Coach(){
     const router = useRouter();
@@ -11,8 +12,8 @@ export default function Coach(){
     });
 
     return(
-        <div>
-            <h2>Hello, {router.query.username}</h2>
+        <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <h2 className={styles.title}>Hello, {router.query.username}</h2>
             {
                 rosterData.data?
                     <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>
@@ -26,7 +27,6 @@ export default function Coach(){
                             <></>
             }
         </div>
-        
     )
 }
 

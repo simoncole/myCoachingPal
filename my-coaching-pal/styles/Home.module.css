@@ -29,6 +29,12 @@
   font-size: 4rem;
   margin-top: 3rem;
   margin-bottom: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .subTitle {
+  font-size: 3rem;
+  font-family: Arial, Helvetica, sans-serif;
  }
 
  .loginFormWrapper{
@@ -54,4 +60,24 @@
 
  .button:hover {
   cursor: pointer;
+ }
+
+ .rosterListWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+ }
+
+ .playerRosterLink {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  padding: 0.25rem;
+ }
+
+ .playerRosterLink:hover {
+  cursor: pointer;
+  color: dodgerblue;
+  transition-duration: 500ms;
+
  }

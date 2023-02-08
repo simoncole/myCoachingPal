@@ -46,8 +46,28 @@ app.get("/verifyUser", async (req, res) => {
 
         res.status(500).json({"error": err.message});
     }
-    
 });
+
+app.get('/getRoster', async (req, res) => {
+    const username = req.query.username;
+
+    try{
+        //get players corresponding to team
+        //return them as array
+        const teamQueryString = "SELECT team FROM users WHERE username=?";
+        const [teamQueryData] = await connection.execute(teamQueryString, [username]);
+        const team = teamQueryData[0].team;
+
+        const playerQueryString = "SELECT username FROM users WHERE role='player' AND TEAM=?";
+        const [playerQueryData, fields] = await connection.execute(playerQueryString, [team]);
+
+        res.status(200).json(playerQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("there was an error");
+    }
+})
 
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);

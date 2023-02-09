@@ -15,19 +15,21 @@ export default function Coach(){
     return(
         <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
-            {
-                rosterData.data?
-                    <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>
-                :
-                    rosterData.isLoading?
-                        <h2>hold on...</h2>
+            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                {
+                    rosterData.data?
+                        <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>
                     :
-                    isError?
-                        <h2>There was an error</h2>
+                        rosterData.isLoading?
+                            <h2>hold on...</h2>
                         :
-                            <></>
-            }
-            {/* <CoachCalendar/> */}
+                        isError?
+                            <h2>There was an error</h2>
+                            :
+                                <></>
+                }
+                <CoachCalendar/>
+            </div>
         </div>
     )
 }

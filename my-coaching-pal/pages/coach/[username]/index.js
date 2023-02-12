@@ -1,4 +1,5 @@
 import CoachCalendar from "@/pages/components/CoachCalendar";
+import CreateWorkout from "@/pages/components/CreateWorkout";
 import RosterList from "@/pages/components/RosterList";
 import { isError, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
@@ -16,7 +17,7 @@ export default function Coach(){
         <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                
+                <CreateWorkout/>
                 {
                     rosterData.data?
                         <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>

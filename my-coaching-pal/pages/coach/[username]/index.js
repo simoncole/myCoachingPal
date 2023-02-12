@@ -16,6 +16,7 @@ export default function Coach(){
         <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+                
                 {
                     rosterData.data?
                         <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>

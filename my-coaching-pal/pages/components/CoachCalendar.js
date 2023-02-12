@@ -41,11 +41,9 @@ export default function CoachCalendar(){
         <div className={styles.calendar}>
             <h2>{getMonthName(date.getMonth())}</h2>
             <table>
-                <thead>
-                    {renderHead().map((day, index) => (
-                        <th key={index}>{day}</th>
-                    ))}
-                </thead>
+                {renderHead().map((day, index) => (
+                    <th key={index}>{day}</th>
+                ))}
                 <tbody>
                     {renderCalendar(getDaysForMonth(date.getDate(), date.getMonth())).map((row) => (
                         row

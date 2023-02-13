@@ -3,8 +3,7 @@ import { useState } from "react";
 import { baseUrl } from "..";
 import styles from "../../styles/Home.module.css";
 
-export default function RosterList({rosterData, coachUsername}){
-    const [isPlayerChecked, setIsPlayerChecked] = useState(new Array(rosterData.length).fill(false));
+export default function RosterList({rosterData, coachUsername, isPlayerChecked, setIsPlayerChecked}){
 
     const handleOnChange = (position) => {
         const updatedCheckedState = isPlayerChecked.map((checkStatus, index) => {
@@ -15,12 +14,13 @@ export default function RosterList({rosterData, coachUsername}){
     }
 
     const handleSubmit = () => {
+        console.log(rosterData)
         const submittedPlayers = [];
         for(let i = 0; i < isPlayerChecked.length; i++){
             if(isPlayerChecked[i]) submittedPlayers.push(rosterData[i])
         }
         //TODO: post workout to database
-
+        
         //refill slections as blank 
         setIsPlayerChecked(new Array(rosterData.length).fill(false));
 

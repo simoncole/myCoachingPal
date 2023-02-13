@@ -5,22 +5,39 @@ import { isError, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
 import { baseUrl, baseServerUrl } from "../.."
 import styles from "../../../styles/Home.module.css";
+import { useState } from "react";
 
 export default function Coach(){
     const router = useRouter();
+
+    //state for the text area of the CreateWorkout component
+    const [textAreaValue, setTextAreaValue] = useState("");
+    //state for the selected players on the roster in RosterList component
+    const [isPlayerChecked, setIsPlayerChecked] = useState([]);
+
+    const useQueryDependencies = {
+        "router": router,
+        "setIsPlayerChecked": setIsPlayerChecked
+    }
     const rosterData = useQuery({
-        queryKey: ["getRoster", router],
-        queryFn:  () => rosterFetch(router)
+        queryKey: ["getRoster", useQueryDependencies],
+        queryFn:  () => rosterFetch(useQueryDependencies.router),
+        onSuccess: (data) => setCheckedOnSuccess(data, useQueryDependencies.setIsPlayerChecked) 
     });
 
     return(
         <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <CreateWorkout/>
+                <CreateWorkout textAreaValue={textAreaValue} setTextAreaValue={setTextAreaValue}/>
                 {
                     rosterData.data?
-                        <RosterList rosterData={rosterData.data} coachUsername={router.query.username}/>
+                        <RosterList 
+                        isPlayerChecked={isPlayerChecked}
+                        setIsPlayerChecked={setIsPlayerChecked}
+                        rosterData={rosterData.data} 
+                        coachUsername={router.query.username}
+                        />
                     :
                         rosterData.isLoading?
                             <h2>hold on...</h2>
@@ -43,4 +60,9 @@ const rosterFetch = async (router) => {
         return await res.json();
     }
     return null;
+}
+
+const setCheckedOnSuccess = (data, setIsPlayerChecked) => {
+    setIsPlayerChecked(new Array(data.length).fill(false));
+    return;
 }

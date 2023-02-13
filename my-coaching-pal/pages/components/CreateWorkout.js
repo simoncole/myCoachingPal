@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-export default function CreateWorkout({textAreaValue, setTextAreaValue}){
-    const [createState, setCreateState] = useState(false);
+export default function CreateWorkout({textAreaValue, setTextAreaValue, createState, setCreateState}){
 
     const handleNewWorkoutCreation = () => {
         setCreateState(true);

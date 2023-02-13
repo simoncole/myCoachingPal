@@ -1,5 +1,6 @@
 import CoachCalendar from "@/pages/components/CoachCalendar";
 import CreateWorkout from "@/pages/components/CreateWorkout";
+import UncheckedRosterList from "@/pages/components/UncheckedRosterList";
 import RosterList from "@/pages/components/RosterList";
 import { isError, useQuery } from "@tanstack/react-query"
 import { useRouter } from "next/router"
@@ -14,6 +15,8 @@ export default function Coach(){
     const [textAreaValue, setTextAreaValue] = useState("");
     //state for the selected players on the roster in RosterList component
     const [isPlayerChecked, setIsPlayerChecked] = useState([]);
+    //state for when create workout button is pushed
+    const [createState, setCreateState] = useState(false);
 
     const useQueryDependencies = {
         "router": router,
@@ -29,15 +32,24 @@ export default function Coach(){
         <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <CreateWorkout textAreaValue={textAreaValue} setTextAreaValue={setTextAreaValue}/>
+                <CreateWorkout
+                textAreaValue={textAreaValue} 
+                setTextAreaValue={setTextAreaValue}
+                createState={createState}
+                setCreateState={setCreateState}
+                />
                 {
                     rosterData.data?
-                        <RosterList 
-                        isPlayerChecked={isPlayerChecked}
-                        setIsPlayerChecked={setIsPlayerChecked}
-                        rosterData={rosterData.data} 
-                        coachUsername={router.query.username}
-                        />
+                        createState?
+                            <RosterList 
+                            isPlayerChecked={isPlayerChecked}
+                            setIsPlayerChecked={setIsPlayerChecked}
+                            rosterData={rosterData.data} 
+                            coachUsername={router.query.username}
+                            createState={createState}
+                            />
+                        :
+                            <UncheckedRosterList rosterData={rosterData.data}/>
                     :
                         rosterData.isLoading?
                             <h2>hold on...</h2>

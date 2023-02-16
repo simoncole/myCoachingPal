@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CreateWorkout({textAreaValue, setTextAreaValue, createState, setCreateState}){
+export default function CreateWorkout({textAreaValue, setTextAreaValue, createState, setCreateState, isPlayerChecked, setWorkoutSubmitState}){
 
     const handleNewWorkoutCreation = () => {
         setCreateState(true);
@@ -13,8 +13,8 @@ export default function CreateWorkout({textAreaValue, setTextAreaValue, createSt
     const handleWorkoutSubmit = (event) => {
         event.preventDefault();
         //TODO upload workout to db for selected athletes
-        alert(textAreaValue)
-    }
+        setWorkoutSubmitState(true);
+    }   
     return(
         <div>
             {

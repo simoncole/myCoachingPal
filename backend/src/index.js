@@ -9,12 +9,16 @@ const app = express();
 
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
+app.use(express.json())
 
+
+  //get routes
 app.get("/", async (req, res) => {
     res.status(200).json({"data": "start of backend!"})
 });
@@ -67,6 +71,19 @@ app.get('/getRoster', async (req, res) => {
         res.status(500).json("there was an error");
     }
 })
+
+
+
+
+//post routes
+app.post("/postWorkout", async (req, res) => {
+    // const players = req.body.players;
+    // const workout = req.body.workout;
+    console.log(req.body);
+
+    res.sendStatus(201);
+})
+
 
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);

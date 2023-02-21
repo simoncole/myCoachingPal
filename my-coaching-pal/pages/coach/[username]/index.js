@@ -19,6 +19,9 @@ export default function Coach(){
     const [createState, setCreateState] = useState(false);
     //state that detects when submit is pushed, triggers useEffect
     const [workoutSubmitState, setWorkoutSubmitState] = useState(false);
+    //state that holds the selected date for the workout
+    const [startDate, setStartDate] = useState(new Date());
+
 
     const useQueryDependencies = {
         "router": router,
@@ -31,7 +34,7 @@ export default function Coach(){
     });
 
     const postWorkout = useMutation({
-        mutationFn: (variables) => postWorkoutFn(variables.players, variables.workout)
+        mutationFn: (variables) => postWorkoutFn(variables.players, variables.workout, variables.date)
     })
 
     //triggers when new workout is submitted and submits to db
@@ -45,7 +48,8 @@ export default function Coach(){
             
             postWorkout.mutate({
                 "players": players,
-                "workout": textAreaValue
+                "workout": textAreaValue,
+                "date": startDate
             })
 
         }
@@ -64,6 +68,8 @@ export default function Coach(){
                 setCreateState={setCreateState}
                 isPlayerChecked={isPlayerChecked}
                 setWorkoutSubmitState={setWorkoutSubmitState}
+                startDate={startDate}
+                setStartDate={setStartDate}
                 />
                 {
                     rosterData.data?
@@ -106,10 +112,11 @@ const setCheckedOnSuccess = (data, setIsPlayerChecked) => {
     return;
 }
 
-const postWorkoutFn = async (players, workout) => {
+const postWorkoutFn = async (players, workout, date) => {
     const data = JSON.stringify({
         "players": players,
-        "workout": workout
+        "workout": workout,
+        "date": date
     })
     const res = await fetch(`${baseServerUrl}/postWorkout`, {
         method: 'POST',

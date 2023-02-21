@@ -77,11 +77,36 @@ app.get('/getRoster', async (req, res) => {
 
 //post routes
 app.post("/postWorkout", async (req, res) => {
-    // const players = req.body.players;
-    // const workout = req.body.workout;
-    console.log(req.body);
+    try{
+        const players = req.body.players;
+        const workout = req.body.workout;
+        //TODO add date that is submitted from frontend
+        const dateObj = new Date();
+        const date = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+        console.log(players, workout, date);
 
-    res.sendStatus(201);
+        let postWorkoutQueryString = `INSERT INTO workouts(
+            username,
+            workoutDescription,
+            workoutDate,
+            workoutStatus
+        )
+        VALUES(
+            ?, ?, ?, 0
+        );`;
+        postWorkoutQueryString = postWorkoutQueryString.replace(/(\r\n|\n|\r)/gm, "");
+        //upload workout to db 
+        for(let i = 0; i < players.length; i++){
+            const dependencies = [players[i], workout, date];
+            const [dbPostRes] = await connection.execute(postWorkoutQueryString, dependencies)              
+            console.log(dbPostRes);
+        }
+        res.sendStatus(201);
+    }
+    catch(err){
+        console.error(err);
+        res.sendStatus(424);
+    }
 })
 
 

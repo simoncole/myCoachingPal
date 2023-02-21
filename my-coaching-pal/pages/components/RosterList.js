@@ -13,19 +13,6 @@ export default function RosterList({rosterData, coachUsername, isPlayerChecked, 
         setIsPlayerChecked(updatedCheckedState);
     }
 
-    const handleSubmit = () => {
-        console.log(rosterData)
-        const submittedPlayers = [];
-        for(let i = 0; i < isPlayerChecked.length; i++){
-            if(isPlayerChecked[i]) submittedPlayers.push(rosterData[i])
-        }
-        //TODO: post workout to database
-        
-        //refill slections as blank 
-        setIsPlayerChecked(new Array(rosterData.length).fill(false));
-
-    }
-
     return(
         <div className={styles.rosterListWrapper}>
             <h3 className={styles.subTitle}>Your Roster:</h3>
@@ -43,7 +30,6 @@ export default function RosterList({rosterData, coachUsername, isPlayerChecked, 
                                     </li>
                             ))
                         }
-                        <button onClick={handleSubmit}>Submit</button>
                     </ul>
 
                 }

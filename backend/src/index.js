@@ -81,8 +81,10 @@ app.post("/postWorkout", async (req, res) => {
         const players = req.body.players;
         const workout = req.body.workout;
         //TODO add date that is submitted from frontend
-        const dateObj = new Date();
-        const date = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+        // const dateObj = new Date();
+        // const date = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+        let date = req.body.date;
+        date = date.slice(0, 10);
         console.log(players, workout, date);
 
         let postWorkoutQueryString = `INSERT INTO workouts(

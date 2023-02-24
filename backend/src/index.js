@@ -9,12 +9,16 @@ const app = express();
 
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
+app.use(express.json())
 
+
+  //get routes
 app.get("/", async (req, res) => {
     res.status(200).json({"data": "start of backend!"})
 });
@@ -46,8 +50,67 @@ app.get("/verifyUser", async (req, res) => {
 
         res.status(500).json({"error": err.message});
     }
-    
 });
+
+app.get('/getRoster', async (req, res) => {
+    const username = req.query.username;
+
+    try{
+        //get players corresponding to team
+        //return them as array
+        const teamQueryString = "SELECT team FROM users WHERE username=?";
+        const [teamQueryData] = await connection.execute(teamQueryString, [username]);
+        const team = teamQueryData[0].team;
+
+        const playerQueryString = "SELECT username FROM users WHERE role='player' AND TEAM=?";
+        const [playerQueryData, fields] = await connection.execute(playerQueryString, [team]);
+        res.status(200).json(playerQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("there was an error");
+    }
+})
+
+
+
+
+//post routes
+app.post("/postWorkout", async (req, res) => {
+    try{
+        const players = req.body.players;
+        const workout = req.body.workout;
+        //TODO add date that is submitted from frontend
+        // const dateObj = new Date();
+        // const date = `${dateObj.getFullYear()}-${dateObj.getMonth()}-${dateObj.getDate()}`;
+        let date = req.body.date;
+        date = date.slice(0, 10);
+        console.log(players, workout, date);
+
+        let postWorkoutQueryString = `INSERT INTO workouts(
+            username,
+            workoutDescription,
+            workoutDate,
+            workoutStatus
+        )
+        VALUES(
+            ?, ?, ?, 0
+        );`;
+        postWorkoutQueryString = postWorkoutQueryString.replace(/(\r\n|\n|\r)/gm, "");
+        //upload workout to db 
+        for(let i = 0; i < players.length; i++){
+            const dependencies = [players[i], workout, date];
+            const [dbPostRes] = await connection.execute(postWorkoutQueryString, dependencies)              
+            console.log(dbPostRes);
+        }
+        res.sendStatus(201);
+    }
+    catch(err){
+        console.error(err);
+        res.sendStatus(424);
+    }
+})
+
 
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);

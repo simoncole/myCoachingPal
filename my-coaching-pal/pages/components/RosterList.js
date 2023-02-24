@@ -15,12 +15,13 @@ export default function RosterList({rosterData, coachUsername, isPlayerChecked, 
 
     return(
         <div className={styles.rosterListWrapper}>
-            <h3 className={styles.subTitle}>Your Roster:</h3>
+            <h2 className={styles.subTitleSmall}>Select athletes:</h2>
                 {
                     <ul>{
                             rosterData.map((player, index) => (
-                                    <li key={index}>
+                                    <li className={styles.rosterValue} key={index}>
                                         <input 
+                                        style={{marginRight: '0.5rem'}}
                                         type="checkbox"
                                         id={index}
                                         checked={isPlayerChecked[index]}

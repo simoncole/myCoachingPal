@@ -1,6 +1,7 @@
 import { useState } from "react";
-import DatePicker from "react-datepicker";
+import DatePicker, { CalendarContainer } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import styles from "../../styles/Home.module.css";
 
 
 export default function CreateWorkout({textAreaValue, setTextAreaValue, createState, setCreateState, isPlayerChecked, setWorkoutSubmitState, startDate, setStartDate}){
@@ -25,17 +26,22 @@ export default function CreateWorkout({textAreaValue, setTextAreaValue, createSt
                     <div>
 
                         <form onSubmit={handleWorkoutSubmit}>
-                            <textarea value={textAreaValue} onChange={handleOnChange}/>
-                            <button type="submit">Create</button>
+                            <textarea className={styles.workoutTextField} value={textAreaValue} onChange={handleOnChange}/>
+                            <div className={styles.flexCenteredWrapper}>
+                                <h2 className={styles.subTitleSmall}>Select Date of Workout:</h2>
+                                    <CalendarContainer className={styles.datePicker}>
+                                        <DatePicker
+                                        selected={startDate}
+                                        onChange={(date) => setStartDate(date)} 
+                                        dateFormat="yyyy-MM-dd"
+                                        />
+                                    </CalendarContainer>
+                                    <button className={styles.submitNewWorkout} type="submit">Create</button>
+                            </div>
                         </form>
-                        <DatePicker
-                        selected={startDate}
-                        onChange={(date) => setStartDate(date)} 
-                        dateFormat="yyyy-MM-dd"
-                        />
                     </div>
                 :
-                <button onClick={handleNewWorkoutCreation} type="submit">New Workout</button>
+                <button onClick={handleNewWorkoutCreation} type="submit" className={styles.newWorkoutButton}>New Workout</button>
             }
         </div>
     )

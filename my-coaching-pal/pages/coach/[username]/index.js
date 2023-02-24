@@ -58,41 +58,47 @@ export default function Coach(){
     }, [workoutSubmitState]);
 
     return(
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+        <div className={styles.flexCenteredColumnWrapper}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
-            <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <CreateWorkout
-                textAreaValue={textAreaValue} 
-                setTextAreaValue={setTextAreaValue}
-                createState={createState}
-                setCreateState={setCreateState}
-                isPlayerChecked={isPlayerChecked}
-                setWorkoutSubmitState={setWorkoutSubmitState}
-                startDate={startDate}
-                setStartDate={setStartDate}
-                />
-                {
-                    rosterData.data?
-                        createState?
-                            <RosterList 
-                            isPlayerChecked={isPlayerChecked}
-                            setIsPlayerChecked={setIsPlayerChecked}
-                            rosterData={rosterData.data} 
-                            coachUsername={router.query.username}
-                            createState={createState}
-                            />
-                        :
-                            <UncheckedRosterList rosterData={rosterData.data}/>
-                    :
-                        rosterData.isLoading?
-                            <h2>hold on...</h2>
-                        :
-                        isError?
-                            <h2>There was an error</h2>
+            <div style={{display: "flex", justifyContent: "center", alignItems: "start"}}>
+                <div className={styles.flexCenteredColumnWrapper} style={{padding: '1rem'}}>
+                    <h3 className={styles.subTitle}>Your Roster</h3>
+                        <CreateWorkout
+                        textAreaValue={textAreaValue} 
+                        setTextAreaValue={setTextAreaValue}
+                        createState={createState}
+                        setCreateState={setCreateState}
+                        isPlayerChecked={isPlayerChecked}
+                        setWorkoutSubmitState={setWorkoutSubmitState}
+                        startDate={startDate}
+                        setStartDate={setStartDate}
+                        />
+                        {
+                            rosterData.data?
+                                createState?
+                                    <RosterList 
+                                    isPlayerChecked={isPlayerChecked}
+                                    setIsPlayerChecked={setIsPlayerChecked}
+                                    rosterData={rosterData.data} 
+                                    coachUsername={router.query.username}
+                                    createState={createState}
+                                    />
+                                :
+                                    <UncheckedRosterList rosterData={rosterData.data}/>
                             :
-                                <></>
-                }
-                <CoachCalendar/>
+                                rosterData.isLoading?
+                                    <h2>hold on...</h2>
+                                :
+                                isError?
+                                    <h2>There was an error</h2>
+                                    :
+                                        <></>
+                        }
+                </div>
+                <div style={{padding: '1rem'}}>
+                    <CoachCalendar/>
+                </div>
+
             </div>
         </div>
     )

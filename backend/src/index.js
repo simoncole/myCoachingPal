@@ -72,6 +72,27 @@ app.get('/getRoster', async (req, res) => {
     }
 })
 
+//athlete routes
+app.get('/getAthleteData', async (req, res) => {
+    try {
+        const username = req.query.username;
+
+        console.log(username)
+        const queryString = `SELECT users.username, workouts.workoutID, workouts.workoutDescription, workouts.workoutDate, workouts.workoutStatus, users.team 
+        FROM users 
+        INNER JOIN workouts ON workouts.username=users.username 
+        WHERE users.username=?;`;
+
+        const [userQueryData] = await connection.execute(queryString, [username]);
+
+        res.status(200).json(userQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("there was an error");
+    }
+})
+
 
 
 

@@ -52,7 +52,7 @@ const fetchLoginData = async (formDataState) => {
 
 const redirectUser = (data, setUnverifiedState, router, username) => {
   if(data.role === "coach") router.push(`${baseUrl}/coach/${username}`);
-  else if(data.role === "player") router.push(`${baseUrl}/player`);
+  else if(data.role === "player") router.push(`${baseUrl}/athlete/${username}`);
   else if(data.role === "unverified") setUnverifiedState(true);
   else{
     console.error("there was an error in the role returned");

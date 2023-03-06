@@ -158,3 +158,16 @@
   align-items: center;
   justify-content: center;
  }
+
+ .athleteCalendar {
+  background-color: black;
+  border-radius: .5rem;
+ }
+
+ .reactCalendar {
+  background: black;
+ }
+
+ .reactCalendar button {
+  background-color: aliceblue;
+ }

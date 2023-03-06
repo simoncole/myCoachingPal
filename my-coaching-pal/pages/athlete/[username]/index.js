@@ -1,8 +1,21 @@
 import { baseServerUrl } from "@/pages";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import {Calendar} from 'react-calendar';
+import styles from "../../../styles/Home.module.css";
+import 'react-calendar/dist/Calendar.css';
+import AthleteCalendar from "@/pages/components/AthleteCalendar";
+
+
 
 export default function Athlete(){
+    const [date, setDate] = useState(new Date());
+
+    const handleDateChange = (date) => {
+        setDate(date);
+    }
+
     const router = useRouter()
     const username = router.query.username;
 
@@ -19,7 +32,17 @@ export default function Athlete(){
             <h2>{router.query.username}</h2>
             {
                 userData.data?
-                <h2>{userData.data[0].workoutDescription}</h2>
+                <div>
+                    <AthleteCalendar/>
+                    {userData.data.map((workout, index) => (
+                        <div key={index}>
+                            <h2>{workout.workoutDescription}</h2>
+                            <h2>{workout.workoutDate}</h2>
+                        </div>
+                    ))}
+                </div>
+                
+            
                 :
                 <h2>hold on</h2>
             }

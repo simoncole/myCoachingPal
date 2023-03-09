@@ -5,16 +5,14 @@ import { useState } from "react";
 import {Calendar} from 'react-calendar';
 import styles from "../../../styles/Home.module.css";
 import 'react-calendar/dist/Calendar.css';
-import AthleteCalendar from "@/pages/components/AthleteCalendar";
+import AthleteCalendar, { getMonthName } from "@/pages/components/AthleteCalendar";
 
 
 
 export default function Athlete(){
-    const [date, setDate] = useState(new Date());
-
-    const handleDateChange = (date) => {
-        setDate(date);
-    }
+    const dateInstance = new Date;
+    const [selectedDate, setSelectedDate] = useState(dateInstance.getDate());
+    const [selectedMonth, setSelectedMonth] = useState(getMonthName(dateInstance.getMonth()));
 
     const router = useRouter()
     const username = router.query.username;
@@ -28,21 +26,23 @@ export default function Athlete(){
     
     return(
         <div>
-            <h2>Athlete page</h2>
-            <h2>{router.query.username}</h2>
             {
                 userData.data?
                 <div>
-                    <AthleteCalendar/>
+                    <h2>Athlete page</h2>
+                    <h2>{router.query.username}</h2>
+                    <AthleteCalendar 
+                    setSelectedDate={setSelectedDate}
+                    setSelectedMonth={setSelectedMonth}
+                    />
                     {userData.data.map((workout, index) => (
                         <div key={index}>
                             <h2>{workout.workoutDescription}</h2>
                             <h2>{workout.workoutDate}</h2>
                         </div>
                     ))}
+                    <h2>Selected Date: {selectedMonth + " " + selectedDate}</h2>
                 </div>
-                
-            
                 :
                 <h2>hold on</h2>
             }

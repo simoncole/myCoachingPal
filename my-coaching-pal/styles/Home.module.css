@@ -104,6 +104,8 @@
 
  .calendarField {
   padding: 2rem;
+  border-style: solid;
+  border-radius: 0.5rem;
  }
 
  .calendar {

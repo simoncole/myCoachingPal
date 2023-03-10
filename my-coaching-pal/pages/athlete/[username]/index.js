@@ -6,6 +6,7 @@ import {Calendar} from 'react-calendar';
 import styles from "../../../styles/Home.module.css";
 import 'react-calendar/dist/Calendar.css';
 import AthleteCalendar, { getMonthName } from "@/pages/components/AthleteCalendar";
+import WorkoutDescription from "@/pages/components/WorkoutDescription";
 
 
 
@@ -28,20 +29,23 @@ export default function Athlete(){
         <div>
             {
                 userData.data?
-                <div>
-                    <h2>Athlete page</h2>
+                <div className={styles.flexCenteredWrapper}>
                     <h2>{router.query.username}</h2>
-                    <AthleteCalendar 
-                    setSelectedDate={setSelectedDate}
-                    setSelectedMonth={setSelectedMonth}
-                    />
-                    {userData.data.map((workout, index) => (
-                        <div key={index}>
-                            <h2>{workout.workoutDescription}</h2>
-                            <h2>{workout.workoutDate}</h2>
+
+                    <div className={styles.rowWrapper}>
+                        <AthleteCalendar 
+                        setSelectedDate={setSelectedDate}
+                        setSelectedMonth={setSelectedMonth}
+                        />
+                        <div>
+                            <h2>Selected Date: {selectedMonth + " " + selectedDate}</h2>
+                            <WorkoutDescription
+                            userData={userData}
+                            selectedDay={selectedDate}
+                            selectedMonth={selectedMonth}
+                            />
                         </div>
-                    ))}
-                    <h2>Selected Date: {selectedMonth + " " + selectedDate}</h2>
+                    </div>
                 </div>
                 :
                 <h2>hold on</h2>

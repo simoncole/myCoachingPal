@@ -74,6 +74,12 @@
     flex-direction: column;
  }
 
+ .rowWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
  .flexCenteredColumnWrapper {
     display: flex;
     justify-content: center;

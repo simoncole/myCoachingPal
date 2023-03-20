@@ -38,7 +38,6 @@ export default function Athlete(){
                         setSelectedMonth={setSelectedMonth}
                         />
                         <div>
-                            <h2>Selected Date: {selectedMonth + " " + selectedDate}</h2>
                             <WorkoutDescription
                             userData={userData}
                             selectedDay={selectedDate}

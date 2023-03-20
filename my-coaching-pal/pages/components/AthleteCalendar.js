@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../../styles/Home.module.css";
+import CalendarContents from "./CalendarContents";
 import { daysOfWeek } from "./CoachCalendar";
+
 
 export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
     const [date, setDate] = useState(getNearestSunday());
@@ -26,7 +28,8 @@ export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
         const rowsArr = [];
 
         const handleClick = (day) => {
-            setSelectedMonth(getMonthOnCalendar(day, days));
+            let month = getMonthOnCalendar(day, days);
+            setSelectedMonth(month);
             setSelectedDate(day);
         }
 
@@ -34,7 +37,10 @@ export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
             rowsArr.push(
                 <tr key={i}>{
                     days.slice(i*7, (i*7)+7).map((day, index) => (
-                        <td onClick={() => handleClick(day)} className={styles.calendarField} key={index}>{day}</td>
+                        <CalendarContents 
+                        key={index}
+                        handleClick={handleClick}
+                        />
                 ))    
                 }</tr>
             )

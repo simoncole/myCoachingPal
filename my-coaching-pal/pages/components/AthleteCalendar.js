@@ -4,8 +4,9 @@ import CalendarContents from "./CalendarContents";
 import { daysOfWeek } from "./CoachCalendar";
 
 
-export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
+export default function AthleteCalendar({setSelectedDate, setSelectedMonth, year, username}) {
     const [date, setDate] = useState(getNearestSunday());
+    const [dayMonthArr, setDayMonthArr] = useState([]);
     // const [selectedDate, setSelectedDate] = useState(new Date().getDay());
 
     const renderHead = () => {
@@ -32,13 +33,16 @@ export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
             setSelectedMonth(month);
             setSelectedDate(day);
         }
-
         for(let i = 0; i < 4; i++){
             rowsArr.push(
                 <tr key={i}>{
                     days.slice(i*7, (i*7)+7).map((day, index) => (
                         <CalendarContents 
                         key={index}
+                        day={day}
+                        month={getMonthOnCalendar(day, days)}
+                        year={year}
+                        username={username}
                         handleClick={handleClick}
                         />
                 ))    
@@ -63,8 +67,8 @@ export default function AthleteCalendar({setSelectedDate, setSelectedMonth}) {
                 </thead>
                 <tbody>
                     {renderCalendar(
-                        getDaysForMonth(date.getDate(), date.getMonth())).map((row) => (
-                        row
+                      getDaysForMonth(date.getDate(), date.getMonth())).map((row) => (
+                            row
                         )
                     )}
 

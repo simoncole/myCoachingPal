@@ -77,8 +77,8 @@ app.get('/getAthleteData', async (req, res) => {
     try {
         const username = req.query.username;
 
-        console.log(username)
-        const queryString = `SELECT users.username, workouts.workoutID, workouts.workoutDescription, workouts.workoutDate, workouts.workoutStatus, users.team 
+        const queryString = `
+        SELECT users.username, workouts.workoutID, workouts.workoutDescription, workouts.workoutDate, workouts.workoutStatus, users.team 
         FROM users 
         INNER JOIN workouts ON workouts.username=users.username 
         WHERE users.username=?;`;
@@ -90,6 +90,56 @@ app.get('/getAthleteData', async (req, res) => {
     catch(err){
         console.error(err);
         res.status(500).json("there was an error");
+    }
+})
+
+app.get('/getWorkoutsOnDate', async (req, res) => {
+    try {
+        const day = req.query.day;
+        const month = req.query.month;
+        const year = req.query.year;
+        const username = req.query.username;
+
+        const convertedDate = convertDate(day, month, year); 
+
+        const queryString = `
+        SELECT workoutDescription, workoutStatus, workoutDate
+        FROM workouts
+        WHERE username=? AND workoutDate=?`;
+
+        const [workoutQueryData] = await connection.execute(queryString, [username, convertedDate]);
+
+        res.status(200).json(workoutQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+})
+
+//retrieve the status and date of a workout for the purpose of the status dot on the calendar
+app.get('/workoutDotStatus', async (req, res) => {
+    try{
+        const day = req.query.day;
+        const month = req.query.month;
+        const year = req.query.year;
+        const username = req.query.username;
+
+        const convertedDate = convertDate(day, month, year);
+
+        const queryString = `
+        SELECT workoutStatus, workoutDate 
+        FROM workouts 
+        WHERE username=? AND workoutDate=?;`;
+
+        const [workoutStatusData] = await connection.execute(queryString, [username, convertedDate])
+
+        console.log(workoutStatusData);
+
+        res.status(200).json(workoutStatusData);
+    }
+    catch(err){
+        console.error(err);
     }
 })
 
@@ -136,3 +186,23 @@ app.post("/postWorkout", async (req, res) => {
 app.listen(port, () => {
     console.log(`app is listening on port ${port}`);
 })
+
+const convertDate = (day, month, year) => {
+    const months = {
+        January: '01',
+        Febuary: '02',
+        March: '03',
+        April: '04',
+        May: '05',
+        June: '06',
+        July: '07',
+        August: '08',
+        September: '09',
+        October: '10',
+        November: '11',
+        December: '12',
+      }
+    
+      const numMonth = months[month];
+      return `${year}-${numMonth}-${day}`;
+}

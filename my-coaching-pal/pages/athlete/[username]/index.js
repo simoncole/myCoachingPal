@@ -14,6 +14,8 @@ export default function Athlete(){
     const dateInstance = new Date;
     const [selectedDate, setSelectedDate] = useState(dateInstance.getDate());
     const [selectedMonth, setSelectedMonth] = useState(getMonthName(dateInstance.getMonth()));
+    //for now we are simplifying and assuming the selected year is always the current one
+    const [selectedYear, setSelectedYear] = useState(dateInstance.getFullYear());
 
     const router = useRouter()
     const username = router.query.username;
@@ -36,12 +38,15 @@ export default function Athlete(){
                         <AthleteCalendar 
                         setSelectedDate={setSelectedDate}
                         setSelectedMonth={setSelectedMonth}
+                        username={username}
+                        year={selectedYear}
                         />
                         <div>
                             <WorkoutDescription
-                            userData={userData}
                             selectedDay={selectedDate}
                             selectedMonth={selectedMonth}
+                            selectedYear={selectedYear}
+                            username={username}
                             />
                         </div>
                     </div>

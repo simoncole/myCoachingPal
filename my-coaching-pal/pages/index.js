@@ -32,7 +32,7 @@ export default function Home() {
       <Head>
         <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="mcpIcon.ico" />
       </Head>
       <div className={styles.loginWrapper}>
         <h1 className={styles.title}>Please Log In</h1>
@@ -52,7 +52,7 @@ const fetchLoginData = async (formDataState) => {
 
 const redirectUser = (data, setUnverifiedState, router, username) => {
   if(data.role === "coach") router.push(`${baseUrl}/coach/${username}`);
-  else if(data.role === "player") router.push(`${baseUrl}/player`);
+  else if(data.role === "player") router.push(`${baseUrl}/athlete/${username}`);
   else if(data.role === "unverified") setUnverifiedState(true);
   else{
     console.error("there was an error in the role returned");

@@ -1,5 +1,7 @@
 import { useState } from "react";
 import styles from "../../styles/Home.module.css";
+import { getMonthName, getDaysForMonth, renderCalendar } from "./AthleteCalendar";
+
 
 export const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
@@ -54,78 +56,3 @@ export default function CoachCalendar(){
     )
 }
 
-export function getMonthName(monthNum) {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December"
-    ];
-  
-    if (monthNum >= 0 && monthNum <= 11) {
-      return months[monthNum];
-    } else {
-      return "Invalid month number";
-    }
-  }
-
-export function getDaysForMonth(day, month) {
-    const days = [];
-    for(let i = 0; i < 28; i++){
-        switch(month){
-            case 1:
-                if(day >= 28){
-                    days.push(day);
-                    day = 1;  
-                }
-                else{
-                    days.push(day);
-                    day++;
-                }
-                break; 
-            case  8 || 3 || 5 || 10:
-                if(day >= 30){
-                    days.push(day);
-                    day = 1;
-                }
-                else{
-                    days.push(day);
-                    day++;
-                } 
-                break;
-            default:
-                if(day >= 31){
-                    days.push(day);
-                    day = 1;
-                }
-                else{
-                    days.push(day);
-                    day++;
-                } 
-                break;
-        }        
-    }
-    return days;
-}
-
-export function renderCalendar(days) {
-    const rowsArr = [];
-    for(let i = 0; i < 4; i++){
-        rowsArr.push(
-            <tr key={i}>{
-                days.slice(i*7, (i*7)+7).map((day, index) => (
-                    <td key={index} className={styles.calendarField}>{day}</td>
-            ))    
-            }</tr>
-        )
-    }
-    return rowsArr;
-} 

@@ -74,6 +74,12 @@
     flex-direction: column;
  }
 
+ .rowWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
  .flexCenteredColumnWrapper {
     display: flex;
     justify-content: center;
@@ -103,7 +109,27 @@
  }
 
  .calendarField {
-  padding: 2rem;
+  width: 5rem;
+  height: 5rem;
+  border-style: solid;
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+ }
+
+ .calendarDate {
+  padding: 0.1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .calendarStatusIndicatorWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+ }
+
+ .calendarField:hover {
+  cursor: pointer;
  }
 
  .calendar {
@@ -157,4 +183,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
+ }
+
+ .athleteCalendar {
+  background-color: black;
+  border-radius: .5rem;
+ }
+
+ .reactCalendar {
+  background: black;
+ }
+
+ .reactCalendar button {
+  background-color: aliceblue;
  }

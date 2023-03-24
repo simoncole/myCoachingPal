@@ -1,0 +1,199 @@
+/* .main {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6rem;
+  min-height: 100vh;
+}
+
+.description {
+  display: inherit;
+  justify-content: inherit;
+  align-items: inherit;
+  font-size: 0.85rem;
+  max-width: var(--max-width);
+  width: 100%;
+  z-index: 2;
+  font-family: var(--font-mono);
+}
+ */
+ .loginWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+ }
+
+ .title {
+  font-size: 4rem;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .subTitle {
+  font-size: 3rem;
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .subTitleSmall {
+  font-size: 1.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .loginFormWrapper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-direction: column;
+ }
+
+ .loginField {
+  margin: .5rem;
+ }
+
+ .button{
+  background-color: white;
+  color: black;
+  font-size: 1.5rem;
+  font-family: 'Times New Roman', Times, serif;
+  border-radius: .5rem;
+  padding: .5rem;
+ }
+
+ .button:hover {
+  cursor: pointer;
+ }
+
+ .flexCenteredWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+ }
+
+ .rowWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
+
+ .flexCenteredColumnWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+ }
+
+ .rosterListWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 1rem;
+ }
+
+ .playerRosterLink {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  padding: 0.25rem;
+ }
+
+ .playerRosterLink:hover {
+  cursor: pointer;
+  color: dodgerblue;
+  transition-duration: 500ms;
+
+ }
+
+ .calendarField {
+  width: 5rem;
+  height: 5rem;
+  border-style: solid;
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+ }
+
+ .calendarDate {
+  padding: 0.1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ }
+
+ .calendarStatusIndicatorWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+ }
+
+ .calendarField:hover {
+  cursor: pointer;
+ }
+
+ .calendar {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+ }
+
+ .rosterValue {
+  padding: 1rem 0 0 1rem;
+  font-family: Arial, Helvetica, sans-serif;
+ }
+
+ .newWorkoutButton {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: black;
+  color: white;
+  border: white;
+  border-style: solid;
+  border-radius: 0.5rem;
+ }
+ .newWorkoutButton:hover {
+  cursor: pointer;
+
+ }
+
+ .workoutTextField {
+  width: 20rem;
+  height: 10rem;
+  border: 2px solid white;
+  border-radius: 5px;
+  font-family: Arial, Helvetica, sans-serif;
+  padding: 0.5rem; 
+ }
+
+ .submitNewWorkout {
+  margin: 0.5rem;
+  padding: 0.5rem;
+  background-color: black;
+  color: white;
+  border: white;
+  border-style: solid;
+  border-radius: 0.5rem;
+ }  
+ .submitNewWorkout:hover {
+  cursor: pointer;
+ }
+
+ .datePicker {
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+ }
+
+ .athleteCalendar {
+  background-color: black;
+  border-radius: .5rem;
+ }
+
+ .reactCalendar {
+  background: black;
+ }
+
+ .reactCalendar button {
+  background-color: aliceblue;
+ }

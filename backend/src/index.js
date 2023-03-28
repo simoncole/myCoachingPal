@@ -13,6 +13,7 @@ const connection = await mysql.createConnection(process.env.DATABASE_URL);
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Methods", "POST, PUT, GET");
     next();
   });
 app.use(express.json())
@@ -103,7 +104,7 @@ app.get('/getWorkoutsOnDate', async (req, res) => {
         const convertedDate = convertDate(day, month, year); 
 
         const queryString = `
-        SELECT workoutDescription, workoutStatus, workoutDate
+        SELECT workoutDescription, workoutStatus, workoutDate, workoutID
         FROM workouts
         WHERE username=? AND workoutDate=?`;
 
@@ -134,8 +135,6 @@ app.get('/workoutDotStatus', async (req, res) => {
 
         const [workoutStatusData] = await connection.execute(queryString, [username, convertedDate])
 
-        console.log(workoutStatusData);
-
         res.status(200).json(workoutStatusData);
     }
     catch(err){
@@ -144,7 +143,25 @@ app.get('/workoutDotStatus', async (req, res) => {
 })
 
 
+//put routes
+app.put('/updateWorkoutStatus', async (req, res) => {
+    try{
+        const workoutID = req.body.workoutID;
+        const queryString = `
+        UPDATE workouts
+        SET workoutStatus=1
+        WHERE workoutID=?;`
 
+        const [sqlRes] = await connection.execute(queryString, [workoutID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+})
 
 //post routes
 app.post("/postWorkout", async (req, res) => {

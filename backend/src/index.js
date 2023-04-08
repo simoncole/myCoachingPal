@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import mysql from 'mysql2/promise';
+import cors from 'cors';
 
 const port = 4000;
 const app = express();
@@ -10,12 +11,13 @@ const app = express();
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "POST, PUT, GET");
-    next();
-  });
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header("Access-Control-Allow-Methods", "POST, PUT, GET");
+//     next();
+//   });
+app.use(cors());
 app.use(express.json())
 
 
@@ -144,15 +146,18 @@ app.get('/workoutDotStatus', async (req, res) => {
 
 
 //put routes
-app.put('/updateWorkoutStatus', async (req, res) => {
+app.put('/updateWorkoutStatusFeedback', async (req, res) => {
     try{
+        //update the workout status to 1 and update the feedback
         const workoutID = req.body.workoutID;
+        const workoutFeedback = req.body.workoutFeedback;
         const queryString = `
         UPDATE workouts
-        SET workoutStatus=1
-        WHERE workoutID=?;`
+        SET workoutStatus=1,
+        workoutFeedback=?
+        WHERE workoutID=?;`;
 
-        const [sqlRes] = await connection.execute(queryString, [workoutID]);
+        const [sqlRes] = await connection.execute(queryString, [workoutFeedback, workoutID]);
         console.log(sqlRes);
 
         res.status(204);

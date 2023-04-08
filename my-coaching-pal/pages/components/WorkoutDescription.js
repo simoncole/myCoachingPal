@@ -9,6 +9,7 @@ import styles from '../../styles/Home.module.css';
 //changing this component to make backend call that 
 export default function WorkoutDescription({selectedDay, selectedMonth, selectedYear, username}) {
     // const [workouts, setWorkouts] = useState([])
+    const [workoutSubmitted, setWorkoutSubmitted] = useState(false);
 
     // const workouts = getWorkoutsToday(userData, selectedDay, selectedMonth);
 
@@ -26,7 +27,7 @@ export default function WorkoutDescription({selectedDay, selectedMonth, selected
     const selectedWorkouts = useQuery({
         queryKey: ["selectedWorkouts", selectedWorkoutsQueryKey],
         queryFn: () => fetchWorkoutsOnDate(selectedWorkoutsQueryKey),
-        enabled: !!selectedWorkoutsQueryKey.selectedDay
+        enabled: !!selectedWorkoutsQueryKey.selectedDay,
     })
 
     
@@ -43,7 +44,19 @@ export default function WorkoutDescription({selectedDay, selectedMonth, selected
                             <h3>{
                                 workout.workoutDescription
                             }</h3>
-                            <WorkoutCompletion  workout={workout}/>
+                            {
+                                workout.workoutStatus ?
+                                    <h3>Workout Completed</h3>
+                                :
+                                    workoutSubmitted?    
+                                        <h3>Workout Completed</h3>
+                                    :
+                                        <WorkoutCompletion 
+                                        workout={workout}
+                                        setWorkoutSubmitted={setWorkoutSubmitted}
+                                        />
+                                    
+                            }
                         </div>
                         
                     ))

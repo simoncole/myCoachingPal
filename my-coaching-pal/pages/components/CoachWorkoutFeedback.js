@@ -1,5 +1,7 @@
-import {useQuery} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import { baseServerUrl } from '..';
+import FeedbackList from './FeedbackList';
+import styles from '../../styles/Home.module.css';
 
 export default function CoachWorkoutFeedback({username}){
     //query to fetch the workouts that have been completed that haven't been dismissed
@@ -13,19 +15,34 @@ export default function CoachWorkoutFeedback({username}){
         queryFn: () => fetchRecentlyCompletedWorkouts(username),
     });
 
+    const updateDismissalFn = async (workoutID) => {
+        const res = await fetch(`${baseServerUrl}/dismissWorkout?workoutID=${workoutID}`, {
+            method: 'PUT',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        })
+        return res.status;
+    }
+
+    //Querty to update the workout status to dismissed
+    const updateDismissal = useMutation({
+        mutationFn: (variables) => updateDismissalFn(variables.workoutID),
+
+    })
+
     return(
         <div>
             <h1>Coach Workout Feedback</h1>
             {
                 feedbackQuery.data?
-                    feedbackQuery.data.map((workout, index) => {
-                        return(
-                            <div key={index}>
-                                <h2>{workout.workoutDescription}</h2>
-                            </div>       
-                        )
-                    }
-                )
+                    <div className={styles.scrollingFieldContainer}>
+                        <FeedbackList
+                        workouts={feedbackQuery.data}
+                        updateDismissal={updateDismissal}
+                        />
+                    </div>
                 :
                     feedbackQuery.isLoading?
                         <h2>hold on...</h2>

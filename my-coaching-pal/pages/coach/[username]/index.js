@@ -24,10 +24,6 @@ export default function Coach(){
     //state that holds the selected date for the workout
     const [startDate, setStartDate] = useState(new Date());
 
-    //Have a query to fetch the recently completed workouts
-    //Have another query to fetch the missed workouts
-    //Each happens in their respective components
-    
     const rosterDataQueryDependencies = {
         "router": router,
         "setIsPlayerChecked": setIsPlayerChecked

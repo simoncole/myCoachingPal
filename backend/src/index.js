@@ -149,7 +149,7 @@ app.get('/getRecentlyCompletedWorkouts', async (req, res) => {
         const username = req.query.username;
 
         const queryString = `
-            SELECT w.workoutDescription, w.workoutDate, w.workoutFeedback
+            SELECT w.workoutDescription, w.workoutDate, w.workoutFeedback, u.username, w.workoutID, w.dismissedStatus
             FROM workouts w
             JOIN users u ON w.username = u.username
             WHERE u.team = (
@@ -196,7 +196,26 @@ app.put('/updateWorkoutStatusFeedback', async (req, res) => {
         console.error(err);
         res.status(500);
     }
-})
+});
+
+app.put('/dismissWorkout', async (req, res) => {
+    try{
+        const workoutID = req.query.workoutID;
+        const queryString = `
+        UPDATE workouts
+        SET dismissedStatus=1
+        WHERE workoutID=?;`;
+
+        const [sqlRes] = await connection.execute(queryString, [workoutID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+});
 
 //post routes
 app.post("/postWorkout", async (req, res) => {

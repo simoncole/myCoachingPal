@@ -29,12 +29,11 @@ export default function CoachWorkoutFeedback({username}){
     //Querty to update the workout status to dismissed
     const updateDismissal = useMutation({
         mutationFn: (variables) => updateDismissalFn(variables.workoutID),
-
     })
 
     return(
         <div>
-            <h1>Coach Workout Feedback</h1>
+            <h1 style={{"paddingTop": "2rem"}} className={styles.subTitle}>Coach Workout Feedback</h1>
             {
                 feedbackQuery.data?
                     <div className={styles.scrollingFieldContainer}>

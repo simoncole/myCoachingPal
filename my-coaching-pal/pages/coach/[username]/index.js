@@ -108,7 +108,9 @@ export default function Coach(){
                     <CoachWorkoutFeedback
                     username={router.query.username}
                     />
-                    <MissedWorkouts/>
+                    <MissedWorkouts
+                    username={router.query.username}
+                    />
                 </div>
                     }
         </div>

@@ -8,7 +8,7 @@ export default function FeedbackField({updateStatus, workoutID, setWorkoutSubmit
         setTextAreaValue(event.target.value);
     }
 
-    const handlSubmit = (event) => {
+    const handleSubmit = (event) => {
         //upload workout feedback to database and change status
         event.preventDefault();
         updateStatus.mutate({"workoutID":workoutID, "workoutFeedback":textAreaValue});
@@ -17,7 +17,7 @@ export default function FeedbackField({updateStatus, workoutID, setWorkoutSubmit
 
     return(
         <div>
-            <form onSubmit={handlSubmit}>
+            <form onSubmit={handleSubmit}>
                 <textarea 
                 className={styles.workoutTextField}
                 value={textAreaValue} 

@@ -144,6 +144,63 @@ app.get('/workoutDotStatus', async (req, res) => {
     }
 })
 
+app.get('/getRecentlyCompletedWorkouts', async (req, res) => {
+    try{
+        const username = req.query.username;
+
+        const queryString = `
+            SELECT w.workoutDescription, w.workoutDate, w.workoutFeedback, u.username, w.workoutID, w.dismissedStatus
+            FROM workouts w
+            JOIN users u ON w.username = u.username
+            WHERE u.team = (
+                SELECT team
+                FROM users
+                WHERE username =?
+                AND workoutStatus=1
+                AND !dismissedStatus
+                AND workoutDate >= CURDATE() - INTERVAL 14 DAY
+            );
+        `;
+
+
+        const [workoutQueryData] = await connection.execute(queryString, [username]);
+        console.log(username);
+
+        res.status(200).json(workoutQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+})
+
+app.get('/getMissedWorkouts', async (req, res) => {
+    try{
+        const username = req.query.username;
+
+        const queryString = `
+        SELECT w.workoutDescription, w.workoutDate, u.username, w.workoutID, w.dismissedStatus
+            FROM workouts w
+            JOIN users u ON w.username = u.username
+            WHERE u.team = (
+                SELECT team
+                FROM users
+                WHERE username =?
+                AND workoutStatus=0
+                AND !dismissedStatus
+                AND workoutDate < CURDATE()
+                AND workoutDate >= CURDATE() - INTERVAL 14 DAY
+            );`;
+
+        const [workoutQueryData] = await connection.execute(queryString, [username]);
+
+        res.status(200).json(workoutQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+});
 
 //put routes
 app.put('/updateWorkoutStatusFeedback', async (req, res) => {
@@ -166,7 +223,26 @@ app.put('/updateWorkoutStatusFeedback', async (req, res) => {
         console.error(err);
         res.status(500);
     }
-})
+});
+
+app.put('/dismissWorkout', async (req, res) => {
+    try{
+        const workoutID = req.query.workoutID;
+        const queryString = `
+        UPDATE workouts
+        SET dismissedStatus=1
+        WHERE workoutID=?;`;
+
+        const [sqlRes] = await connection.execute(queryString, [workoutID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+});
 
 //post routes
 app.post("/postWorkout", async (req, res) => {

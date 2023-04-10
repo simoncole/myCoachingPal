@@ -33,7 +33,7 @@ export default function CoachWorkoutFeedback({username}){
 
     return(
         <div>
-            <h1 style={{"paddingTop": "2rem"}} className={styles.subTitle}>Coach Workout Feedback</h1>
+            <h1 style={{"paddingTop": "2rem"}} className={styles.subTitle}>Recent Feedback</h1>
             {
                 feedbackQuery.data?
                     <div className={styles.scrollingFieldContainer}>

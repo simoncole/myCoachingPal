@@ -34,7 +34,7 @@ export default function MissedWorkouts({username}){
 
     return(
         <div>
-            <h1 style={{"paddingTop": "2rem"}} className={styles.subTitle}>Missed Workouts</h1>
+            <h1 style={{"paddingTop": "2rem"}} className={styles.subTitle}>Uncompleted Workouts</h1>
             {
                 missedWorkouts.data?
                 <div className={styles.scrollingFieldContainer}>

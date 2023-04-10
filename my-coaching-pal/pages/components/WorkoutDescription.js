@@ -2,10 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { baseServerUrl } from "..";
 import { getMonthName } from "./AthleteCalendar";
+import WorkoutCompletion from "./WorkoutCompletion";
+import styles from '../../styles/Home.module.css';
+
 
 //changing this component to make backend call that 
 export default function WorkoutDescription({selectedDay, selectedMonth, selectedYear, username}) {
     // const [workouts, setWorkouts] = useState([])
+    const [workoutSubmitted, setWorkoutSubmitted] = useState(false);
 
     // const workouts = getWorkoutsToday(userData, selectedDay, selectedMonth);
 
@@ -23,11 +27,12 @@ export default function WorkoutDescription({selectedDay, selectedMonth, selected
     const selectedWorkouts = useQuery({
         queryKey: ["selectedWorkouts", selectedWorkoutsQueryKey],
         queryFn: () => fetchWorkoutsOnDate(selectedWorkoutsQueryKey),
-        enabled: !!selectedWorkoutsQueryKey.selectedDay
+        enabled: !!selectedWorkoutsQueryKey.selectedDay,
     })
 
     
-    if(selectedWorkouts.isLoading) return <h2>loading...</h2>
+    if(selectedWorkouts.isLoading) return <h2>Workouts on {selectedMonth + " " + selectedDay + ", " + selectedYear}</h2>
+
     else if(selectedWorkouts.isError) return <h2>error</h2>
     else{
         return(
@@ -35,9 +40,25 @@ export default function WorkoutDescription({selectedDay, selectedMonth, selected
                 <h2>Workouts on {selectedMonth + " " + selectedDay + ", " + selectedYear}</h2>
                 {
                     selectedWorkouts.data.map((workout, index) => (
-                        <h3 key={index}>{
-                            workout.workoutDescription
-                        }</h3>
+                        <div key={index}>
+                            <h3>{
+                                workout.workoutDescription
+                            }</h3>
+                            {
+                                workout.workoutStatus ?
+                                    <h3>Workout Completed</h3>
+                                :
+                                    workoutSubmitted?    
+                                        <h3>Workout Completed</h3>
+                                    :
+                                        <WorkoutCompletion 
+                                        workout={workout}
+                                        setWorkoutSubmitted={setWorkoutSubmitted}
+                                        />
+                                    
+                            }
+                        </div>
+                        
                     ))
                 }
                 

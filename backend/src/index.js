@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import mysql from 'mysql2/promise';
+import cors from 'cors';
 
 const port = 4000;
 const app = express();
@@ -10,11 +11,13 @@ const app = express();
 const connection = await mysql.createConnection(process.env.DATABASE_URL);
 
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+// app.use(function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+//     res.header("Access-Control-Allow-Methods", "POST, PUT, GET");
+//     next();
+//   });
+app.use(cors());
 app.use(express.json())
 
 
@@ -103,7 +106,7 @@ app.get('/getWorkoutsOnDate', async (req, res) => {
         const convertedDate = convertDate(day, month, year); 
 
         const queryString = `
-        SELECT workoutDescription, workoutStatus, workoutDate
+        SELECT workoutDescription, workoutStatus, workoutDate, workoutID
         FROM workouts
         WHERE username=? AND workoutDate=?`;
 
@@ -134,8 +137,6 @@ app.get('/workoutDotStatus', async (req, res) => {
 
         const [workoutStatusData] = await connection.execute(queryString, [username, convertedDate])
 
-        console.log(workoutStatusData);
-
         res.status(200).json(workoutStatusData);
     }
     catch(err){
@@ -143,8 +144,105 @@ app.get('/workoutDotStatus', async (req, res) => {
     }
 })
 
+app.get('/getRecentlyCompletedWorkouts', async (req, res) => {
+    try{
+        const username = req.query.username;
+
+        const queryString = `
+            SELECT w.workoutDescription, w.workoutDate, w.workoutFeedback, u.username, w.workoutID, w.dismissedStatus
+            FROM workouts w
+            JOIN users u ON w.username = u.username
+            WHERE u.team = (
+                SELECT team
+                FROM users
+                WHERE username =?
+                AND workoutStatus=1
+                AND !dismissedStatus
+                AND workoutDate >= CURDATE() - INTERVAL 14 DAY
+            );
+        `;
 
 
+        const [workoutQueryData] = await connection.execute(queryString, [username]);
+        console.log(username);
+
+        res.status(200).json(workoutQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+})
+
+app.get('/getMissedWorkouts', async (req, res) => {
+    try{
+        const username = req.query.username;
+
+        const queryString = `
+        SELECT w.workoutDescription, w.workoutDate, u.username, w.workoutID, w.dismissedStatus
+            FROM workouts w
+            JOIN users u ON w.username = u.username
+            WHERE u.team = (
+                SELECT team
+                FROM users
+                WHERE username =?
+                AND workoutStatus=0
+                AND !dismissedStatus
+                AND workoutDate < CURDATE()
+                AND workoutDate >= CURDATE() - INTERVAL 14 DAY
+            );`;
+
+        const [workoutQueryData] = await connection.execute(queryString, [username]);
+
+        res.status(200).json(workoutQueryData);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+});
+
+//put routes
+app.put('/updateWorkoutStatusFeedback', async (req, res) => {
+    try{
+        //update the workout status to 1 and update the feedback
+        const workoutID = req.body.workoutID;
+        const workoutFeedback = req.body.workoutFeedback;
+        const queryString = `
+        UPDATE workouts
+        SET workoutStatus=1,
+        workoutFeedback=?
+        WHERE workoutID=?;`;
+
+        const [sqlRes] = await connection.execute(queryString, [workoutFeedback, workoutID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+});
+
+app.put('/dismissWorkout', async (req, res) => {
+    try{
+        const workoutID = req.query.workoutID;
+        const queryString = `
+        UPDATE workouts
+        SET dismissedStatus=1
+        WHERE workoutID=?;`;
+
+        const [sqlRes] = await connection.execute(queryString, [workoutID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+});
 
 //post routes
 app.post("/postWorkout", async (req, res) => {

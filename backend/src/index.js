@@ -202,6 +202,43 @@ app.get('/getMissedWorkouts', async (req, res) => {
     }
 });
 
+app.get('/getAnnouncements', async (req, res) => {
+    try{
+
+        //actually I think I just need to get all the data for the team no matter what
+        const username = req.query.username;
+
+
+        const teamQueryString = "SELECT team, role FROM users WHERE username=?";
+        const [teamQueryData] = await connection.execute(teamQueryString, [username]);
+        const team = teamQueryData[0].team;
+        const role = teamQueryData[0].role;
+
+        //get all the announcements for the team
+        const announcementQueryString = `
+            SELECT a.body AS body, a.title AS title, r.value AS responseVal, a.ID AS ID
+            FROM Announcements a LEFT OUTER JOIN Responses r
+            ON a.responseIDs = r.ID
+            JOIN users u ON a.creator = u.username
+            WHERE u.team = ? AND !a.status;
+        `;
+
+        const [announcementQueryData] = await connection.execute(announcementQueryString, [team]);
+
+        const response = {
+            announcements: announcementQueryData,
+            role: role,
+            team: team
+        };
+
+        res.status(200).json(response);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500).json("There was an error");
+    }
+});
+
 //put routes
 app.put('/updateWorkoutStatusFeedback', async (req, res) => {
     try{
@@ -242,6 +279,26 @@ app.put('/dismissWorkout', async (req, res) => {
         console.error(err);
         res.status(500);
     }
+});
+
+app.put('/dismissAnnouncement', async (req, res) => {
+    try{
+        const announcementID = req.query.ID;
+        const queryString = `
+        UPDATE Announcements
+        SET status=1
+        WHERE ID=?;`;
+
+        const [sqlRes] = await connection.execute(queryString, [announcementID]);
+        console.log(sqlRes);
+
+        res.status(204);
+    }
+    catch(err){
+        console.error(err);
+        res.status(500);
+    }
+
 });
 
 //post routes

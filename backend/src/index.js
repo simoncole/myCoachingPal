@@ -216,7 +216,7 @@ app.get('/getAnnouncements', async (req, res) => {
 
         //get all the announcements for the team
         const announcementQueryString = `
-            SELECT a.body AS body, a.title AS title, r.value AS responseVal, a.ID AS ID
+            SELECT a.body AS body, a.title AS title, r.value AS responseVal, a.ID AS ID, a.status AS status
             FROM Announcements a LEFT OUTER JOIN Responses r
             ON a.responseIDs = r.ID
             JOIN users u ON a.creator = u.username
@@ -361,3 +361,32 @@ const convertDate = (day, month, year) => {
       const numMonth = months[month];
       return `${year}-${numMonth}-${day}`;
 }
+
+app.post("/postAnnouncement", async (req, res) => {
+    try{
+        const title = req.body.title;
+        const body = req.body.body;
+        const creator = req.body.creator;
+
+        const queryString = `
+        INSERT INTO Announcements(
+            title,
+            body,
+            creator
+        )
+        VALUES(
+            ?, ?, ?
+        );`;
+
+        const dependencies = [title, body, creator];
+
+        const [dbPostRes] = await connection.execute(queryString, dependencies)              
+        console.log(dbPostRes);
+
+        res.sendStatus(201);
+    }
+    catch(err){
+        console.error(err);
+        res.sendStatus(424);
+    }
+});

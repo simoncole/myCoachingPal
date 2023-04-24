@@ -9,6 +9,7 @@ import styles from "../../../styles/Home.module.css";
 import { useEffect, useState } from "react";
 import CoachWorkoutFeedback from "@/pages/components/CoachWorkoutFeedback";
 import MissedWorkouts from "@/pages/components/MissedWorkouts";
+import Link from "next/link";
 
 export default function Coach(){
     const router = useRouter();
@@ -65,6 +66,11 @@ export default function Coach(){
     return(
         <div className={styles.flexCenteredColumnWrapper}>
             <h2 className={styles.title}>Hello, {router.query.username}</h2>
+            <Link 
+            className={styles.announcementLink}
+            href={`/announcements/${router.query.username}`}>
+                Announcements Page
+            </Link>
             {createState?
                 <div style={{display: "flex", justifyContent: "center", alignItems: "start"}}>
                     <div className={styles.flexCenteredColumnWrapper} style={{padding: '1rem'}}>

@@ -7,6 +7,7 @@ import styles from "../../../styles/Home.module.css";
 import 'react-calendar/dist/Calendar.css';
 import AthleteCalendar, { getMonthName } from "@/pages/components/AthleteCalendar";
 import WorkoutDescription from "@/pages/components/WorkoutDescription";
+import Link from "next/link";
 
 
 
@@ -28,11 +29,16 @@ export default function Athlete(){
     });
     
     return(
-        <div>
+        <div id={styles.athletePageWrapper}>
             {
                 userData.data?
                 <div className={styles.flexCenteredWrapper}>
-                    <h2>{router.query.username}</h2>
+                    <h1>Hello {router.query.username}</h1>
+                    <Link 
+                    className={styles.announcementLink}
+                    href={`/announcements/${username}`}>
+                        Announcements Page
+                    </Link>
 
                     <div className={styles.rowWrapper}>
                         <AthleteCalendar 

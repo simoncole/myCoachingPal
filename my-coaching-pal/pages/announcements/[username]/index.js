@@ -3,6 +3,7 @@ import { baseServerUrl } from '@/pages';
 import styles from '../../../styles/Home.module.css';
 import AnnnouncementsList from '@/pages/components/AnnouncementsList';
 import CreateAnnouncement from '@/pages/components/CreateAnnouncement';
+import AnnnouncementsListAthlete from '@/pages/components/AnnnouncementsListAthlete';
 
 export default function Announcements({username}){
     //fetch the announcements for the user
@@ -35,7 +36,11 @@ export default function Announcements({username}){
                     </div>
                 :
                     <div>
-                        <h2>Athlete</h2>
+                        <AnnnouncementsListAthlete
+                        username={username}
+                        announcements={announcements.data.announcements}
+                        />
+
                     </div>
             }
         </div>

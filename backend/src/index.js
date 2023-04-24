@@ -390,3 +390,41 @@ app.post("/postAnnouncement", async (req, res) => {
         res.sendStatus(424);
     }
 });
+
+app.post('/postReply', async (req, res) => {
+    try{
+        const body = req.body.body;
+        const creator = req.body.creator;
+        const announcementID = req.body.announcementID;
+
+        const insertQueryString = `
+        INSERT INTO Responses(
+            value,
+            creator,
+            parentID
+        )
+        VALUES(
+            ?, ?, ?
+        );
+        `;
+
+        const dependencies = [body, creator, announcementID];
+
+        const [dbPostRes] = await connection.execute(insertQueryString, dependencies)              
+        console.log(dbPostRes);
+
+        const updateQueryString = `
+        UPDATE Announcements
+        SET responseIDs = LAST_INSERT_ID()
+        WHERE ID = ?;`;
+
+        const [dbUpdateRes] = await connection.execute(updateQueryString, [announcementID]);
+        console.log(dbUpdateRes);
+
+        res.sendStatus(201);
+    }
+    catch(err){
+        console.error(err);
+        res.sendStatus(424);
+    }
+});

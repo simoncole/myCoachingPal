@@ -1,6 +1,7 @@
 import styles from '../../styles/Home.module.css';
 import { useMutation } from '@tanstack/react-query';
 import { baseServerUrl } from '..';
+import Replies from './Replies';
 
 export default function AnnnouncementsList({announcements}){
     const dismissAnnouncementFn = async (ID) => {
@@ -28,16 +29,21 @@ export default function AnnnouncementsList({announcements}){
 
     return (
         <div>
-            <h1>Announcements</h1>
-            <ul>
+            <ul className={styles.flexCenteredWrapper}>
                 {
                     announcements.map((announcement, index) => {
                         return (
                             announcement.status === 0 &&
-                            <li key={index}>
+                            <li className={styles.announcementListItem} key={index}>
                                 <h2>{announcement.title}</h2>
                                 <p>{announcement.body}</p>
-                                <button onClick={() => handleClick(announcement.ID, index)}>Dismiss</button>
+                                <Replies
+                                announcement={announcement}
+                                />
+                                <button 
+                                onClick={() => handleClick(announcement.ID, index)}
+                                className={styles.replyButton}
+                                >Dismiss</button>
                             </li>
                         )
                     })

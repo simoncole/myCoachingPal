@@ -66,30 +66,45 @@ export default function AnnnouncementsListAthlete({announcements, username, quer
 
     return (
         <div>
-            <h1>Announcements</h1>
-            <ul>
+            <ul className={styles.flexCenteredWrapper}>
                 {
                     announcements.map((announcement, index) => {
                         return (
                             announcement.status === 0 &&
-                            <li key={index}>
+                            <li
+                             key={index}
+                             className={styles.announcementListItem}
+                             >
                                 <h2>{announcement.title}</h2>
                                 <p>{announcement.body}</p>
                                 <Replies 
                                 announcement={announcement}
                                 />
-                                <button onClick={() => handleClick(announcement.ID, index)}>Dismiss</button>
-                                <button onClick={() => handleReplyClick(announcement.ID)}>Reply</button>
+                                <div id={styles.annoucementButtonsWrapper}>
+                                    <button 
+                                    onClick={() => handleClick(announcement.ID, index)}
+                                    className={styles.dismissAnnouncementButton}
+                                    >Dismiss</button>
+                                    <button
+                                    className={styles.replyButton}
+                                    onClick={() => handleReplyClick(announcement.ID)}
+                                    >Reply</button>
+                                </div>
                                 {
                                     replyIDState === announcement.ID ?
                                     <div>
-                                        <form onSubmit={(event) => submitReply(event, index)}>
+                                        <form 
+                                        className={styles.announcementFormWrapper}
+                                        onSubmit={(event) => submitReply(event, index)}>
                                             <textarea value={replyValue}
+                                            className={styles.replyField}
                                             onChange={(e) => setReplyValue(e.target.value)}
                                             >
                                                 Write your reply here
                                             </textarea>
-                                            <button type="submit">Submit</button>
+                                            <button
+                                            className={styles.submitReplyButton}
+                                             type="submit">Submit</button>
                                         </form>
                                     </div>
                                     :

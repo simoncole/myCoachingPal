@@ -45,13 +45,14 @@ export default function CreateAnnouncement({username, announcementsObj}){
     }
 
     return(
-        <div>
+        <div className={styles.flexCenteredWrapper}>
             { 
                 !clickedStatus ?
-                <button onClick={handleClick}>Create Announcement</button>
+                <button className={styles.newWorkoutButton} onClick={handleClick}>Create Announcement</button>
                 :
                 <form 
                 onSubmit={(event) => handleSubmit(event)}
+                className={styles.announcementFormWrapper}
                 >
                     <label htmlFor="title">Title</label>
                     <input type="text" name="title" id="title"
@@ -62,10 +63,11 @@ export default function CreateAnnouncement({username, announcementsObj}){
                     name="body" 
                     value={bodyValue}
                     onChange={(event) => setBodyValue(event.target.value)}
+                    className={styles.workoutTextField}
                     >
                         Enter Announcement Here
                     </textarea>
-                    <button type="submit">Submit</button>
+                    <button className={styles.submitAnnouncementButton} type="submit">Submit</button>
                 </form>
             }
         </div>

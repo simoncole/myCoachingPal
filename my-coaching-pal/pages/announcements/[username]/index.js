@@ -22,7 +22,7 @@ export default function Announcements({username}){
     if(announcements.isLoading) return <div>Loading...</div>;
     else if(announcements.isError) return <div>Error</div>;
     else return (
-        <div>
+        <div className={styles.announcementPageWrapper}>
             <h1>Announcements for {announcements.data.team}</h1>
             {
                 announcements.data.role === "coach" ? 

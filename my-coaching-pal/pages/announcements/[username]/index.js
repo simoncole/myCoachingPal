@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { baseServerUrl } from '@/pages';
 import styles from '../../../styles/Home.module.css';
 import AnnnouncementsList from '@/pages/components/AnnouncementsList';
@@ -6,6 +6,7 @@ import CreateAnnouncement from '@/pages/components/CreateAnnouncement';
 import AnnnouncementsListAthlete from '@/pages/components/AnnnouncementsListAthlete';
 
 export default function Announcements({username}){
+    const queryClient = useQueryClient();
     //fetch the announcements for the user
     const fetchAnnouncements = async (username) => {
         const res = await fetch(`${baseServerUrl}/getAnnouncements?username=${username}`);
@@ -39,6 +40,7 @@ export default function Announcements({username}){
                         <AnnnouncementsListAthlete
                         username={username}
                         announcements={announcements.data.announcements}
+                        queryClient={queryClient}
                         />
 
                     </div>

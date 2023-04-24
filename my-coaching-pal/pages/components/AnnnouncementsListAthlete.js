@@ -2,8 +2,9 @@ import styles from '../../styles/Home.module.css';
 import { useMutation } from '@tanstack/react-query';
 import { baseServerUrl } from '..';
 import { useState } from 'react';
+import Replies from './Replies';
 
-export default function AnnnouncementsListAthlete({announcements, username}) {
+export default function AnnnouncementsListAthlete({announcements, username, queryClient}) {
     const [replyValue, setReplyValue] = useState("");
     const [replyIDState, setReplyIDState] = useState(-1);
 
@@ -41,6 +42,9 @@ export default function AnnnouncementsListAthlete({announcements, username}) {
 
     const postReply = useMutation({
         mutationFn: (variables) => postReplyFn(variables.reply, variables.ID),
+        onSuccess: () => {
+            queryClient.invalidateQueries("getAnnouncements");
+        }
     })
 
     const handleClick = (ID, index) => {
@@ -56,6 +60,7 @@ export default function AnnnouncementsListAthlete({announcements, username}) {
     const submitReply = (event, index) => {
         event.preventDefault();
         postReply.mutate({reply: replyValue, ID: announcements[index].ID});
+        setReplyIDState(-1);
     }
 
 
@@ -70,6 +75,9 @@ export default function AnnnouncementsListAthlete({announcements, username}) {
                             <li key={index}>
                                 <h2>{announcement.title}</h2>
                                 <p>{announcement.body}</p>
+                                <Replies 
+                                announcement={announcement}
+                                />
                                 <button onClick={() => handleClick(announcement.ID, index)}>Dismiss</button>
                                 <button onClick={() => handleReplyClick(announcement.ID)}>Reply</button>
                                 {

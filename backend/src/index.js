@@ -216,7 +216,7 @@ app.get('/getAnnouncements', async (req, res) => {
 
         //get all the announcements for the team
         const announcementQueryString = `
-            SELECT a.body AS body, a.title AS title, r.value AS responseVal, a.ID AS ID, a.status AS status
+            SELECT a.body AS body, a.title AS title, r.value AS responseVal, a.ID AS ID, a.status AS status, r.creator AS replier
             FROM Announcements a LEFT OUTER JOIN Responses r
             ON a.responseIDs = r.ID
             JOIN users u ON a.creator = u.username
